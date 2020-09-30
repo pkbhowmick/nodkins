@@ -57,7 +57,13 @@ app.put('/api/tasks/:id',(req,res)=>{
 })
 
 app.delete('/api/tasks/:id',(req,res)=>{
+    const task = taskList.find(c => c.id === parseInt(req.params.id));
+    if(!task) return res.status(404).send('Found no entry');
 
+    const index = taskList.indexOf(task);
+    taskList.splice(index,1);
+
+    return res.send(task);
 })
 
 const port = process.env.PORT || 3000
