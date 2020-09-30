@@ -25,15 +25,12 @@ app.get('/api/tasks/:id',(req,res)=>{
 })
 
 app.post('/api/tasks',(req,res)=>{
-    const schema =Joi.object ({
-        task : Joi.string().required()
-    });
+    const {error} = validateBody(req.body);
 
-    const result = schema.validate(req.body);
-
-    if(result.error){
-        return res.status(400).send(result.error.details[0].message);
+    if(error){
+        return res.status(400).send(error.details[0].message);
     }
+
     const task = {
         id: taskList.length+1,
         task: req.body.task
@@ -43,14 +40,11 @@ app.post('/api/tasks',(req,res)=>{
 })
 
 app.put('/api/tasks/:id',(req,res)=>{
-    const schema = Joi.object({
-        task : Joi.string().required()
-    });
 
-    const result = schema.validate(req.body);
+    const {error} = validateBody(req.body);
 
-    if(result.error){
-        return res.status(400).send(result.error.details[0].message);
+    if(error){
+        return res.status(400).send(error.details[0].message);
     }
 
     const task = taskList.find(c => c.id === parseInt(req.params.id));
@@ -62,5 +56,17 @@ app.put('/api/tasks/:id',(req,res)=>{
 
 })
 
+app.delete('/api/tasks/:id',(req,res)=>{
+
+})
+
 const port = process.env.PORT || 3000
 app.listen(port, ()=>console.log(`Listening on port ${port}`));
+
+function validateBody(body) {
+    const schema = Joi.object({
+        task : Joi.string().required()
+    });
+
+    return schema.validate(body);
+}
