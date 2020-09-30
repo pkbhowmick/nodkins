@@ -1,3 +1,3 @@
 # nodkins
 
-nodkins is ToDo app build on node.js.
+nodkins is todo app build on node.js.

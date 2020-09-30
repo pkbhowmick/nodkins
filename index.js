@@ -42,7 +42,25 @@ app.post('/api/tasks',(req,res)=>{
     return res.send(task);
 })
 
+app.put('/api/tasks/:id',(req,res)=>{
+    const schema = Joi.object({
+        task : Joi.string().required()
+    });
 
+    const result = schema.validate(req.body);
+
+    if(result.error){
+        return res.status(400).send(result.error.details[0].message);
+    }
+
+    const task = taskList.find(c => c.id === parseInt(req.params.id));
+    if(!task) return res.status(404).send('Found no entry');
+
+    task.task = req.body.task;
+
+    res.send(task);
+
+})
 
 const port = process.env.PORT || 3000
 app.listen(port, ()=>console.log(`Listening on port ${port}`));
