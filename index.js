@@ -1,11 +1,10 @@
 const Joi = require('joi')
+const {v4:uuidv4} = require('uuid')
 const express = require('express')
 const app = express()
 app.use(express.json())
 
 taskList = [
-    {id:1,task:'task1'},
-    {id:2,task:'task2'}
 ]
 
 app.get('/', (req,res) =>{
@@ -32,7 +31,7 @@ app.post('/api/tasks',(req,res)=>{
     }
 
     const task = {
-        id: taskList.length+1,
+        id: uuidv4(),
         task: req.body.task
     };
     taskList.push(task);
