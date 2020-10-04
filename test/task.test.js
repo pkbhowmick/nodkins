@@ -33,3 +33,17 @@ describe('/POST task',()=>{
         })
     })
 })
+
+describe('/POST task',()=>{
+    it('It should POST a task without task in body', (done)=>{
+        let task = {}
+        chai.request(server)
+        .post('/api/tasks')
+        .send(task)
+        .end((err,res)=>{
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+        done();
+        })
+    })
+})
